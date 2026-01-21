@@ -1,0 +1,11 @@
+cat >> .gitignore <<'EOF'
+# Terraform
+**/.terraform/*
+**/*.tfstate
+**/*.tfstate.*
+**/terraform.tfstate.d/*
+
+# Local env
+.env
+.DS_Store
+EOF
