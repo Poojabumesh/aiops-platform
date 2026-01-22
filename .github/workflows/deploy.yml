@@ -1,4 +1,21 @@
-name: Deploy to AWS ECS
+Run aws ecs describe-task-definition \
+  aws ecs describe-task-definition \
+    --task-definition ${{ secrets.ECS_TASK_DEFINITION }} \
+    --query taskDefinition > "$TASK_DEF_FIL"
+  shell: /usr/bin/bash -e {0}
+  env:
+    AWS_REGION: ***
+    ECR_REPOSITORY: ***
+    ECS_SERVICE: ***
+    ECS_CLUSTER: ***
+    ECS_TASK_DEFINITION: aiops-platform-task
+    TASK_DEF_FILE: .github/task-definition.json
+    CONTAINER_NAME: aiops-platform-container
+    AWS_DEFAULT_REGION: ***
+    AWS_ACCESS_KEY_ID: ***
+    AWS_SECRET_ACCESS_KEY: ***
+An error occurred (ClientException) when calling the DescribeTaskDefinition operation: Family contains invalid characters.
+Error: Process completed with exit code 254.name: Deploy to AWS ECS
 
 on:
   push:
@@ -98,7 +115,7 @@ jobs:
       id: task-def
       uses: aws-actions/amazon-ecs-render-task-definition@v1
       with:
-        task-definition: ${{ env.ECS_TASK_DEFINITION }}
+        task-definition: task-definition.json
         container-name: ${{ env.CONTAINER_NAME }}
         image: ${{ steps.build-image.outputs.image }}
 
