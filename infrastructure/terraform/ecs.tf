@@ -16,7 +16,7 @@ resource "aws_ecs_task_definition" "app" {
   requires_compatibilities = ["FARGATE"]
   network_mode             = "awsvpc"
   cpu                      = "256"
-  memory                   = "1024"
+  memory                   = "512"
   execution_role_arn       = aws_iam_role.ecs_execution_role.arn
   task_role_arn            = aws_iam_role.ecs_task_role.arn
 
@@ -52,9 +52,9 @@ resource "aws_ecs_task_definition" "app" {
     healthCheck = {
       command     = ["CMD-SHELL", "curl -f http://localhost:5000/health || exit 1"]
       interval    = 30
-      timeout     = 5
+      timeout     = 10
       retries     = 3
-      startPeriod = 60
+      startPeriod = 180
     }
   }])
 }
