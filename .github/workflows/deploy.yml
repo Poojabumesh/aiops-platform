@@ -1,7 +1,7 @@
 Run aws ecs describe-task-definition \
   aws ecs describe-task-definition \
     --task-definition ${{ secrets.ECS_TASK_DEFINITION }} \
-    --query taskDefinition > "$TASK_DEF_FIL"
+    --query taskDefinition > "$TASK_DEF_FILE"
   shell: /usr/bin/bash -e {0}
   env:
     AWS_REGION: ***
