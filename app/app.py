@@ -36,6 +36,13 @@ def predict():
         200,
     )
 
+@app.route('/version')
+def version():
+    return jsonify({
+        "version": "1.1.0",
+        "phase": "2-cicd",
+        "features": ["health-check", "predictions", "ci-cd"]
+    }), 200
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
