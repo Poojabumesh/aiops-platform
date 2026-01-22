@@ -91,20 +91,24 @@ jobs:
     - name: Download current task definition
       
       run: |
+        set -euo pipefail
         echo "Downloading task definition: ${{ secrets.ECS_TASK_DEFINITION }}"
-        
+        mkdir -p "$(dirname "$TASK_DEF_FILE")"
+
         aws ecs describe-task-definition \
-          --task-definition ${{ env.ECS_TASK_DEFINITION }} \
-          --query taskDefinition > .github/task-definition.json
+          --task-definition "$ECS_TASK_DEFINITION" \
+          --query taskDefinition
+          --output json > "$TASK_DEF_FILE"
+        test -s "$TASK_DEF_FILE" || (echo "ERROR: $TASK_DEF_FILE was not created (or is empty)" && exit 1)
 
-        if [ ! -f task-definition.json ]; then
-          echo "ERROR: task-definition.json was not created"
-          exit 1
-        fi
+        echo "Task definition downloaded successfully:"
+        ls -lh "$TASK_DEF_FILE"
+
+        #if [ ! -f task-definition.json ]; then
+        #  echo "ERROR: task-definition.json was not created"
+        #  exit 1
+        #fi
         
-        echo "Task definition downloaded successfully"
-        ls -lh task-definition.json
-
     - name: Fill in the new image ID in the Amazon ECS task definition
       id: task-def
       uses: aws-actions/amazon-ecs-render-task-definition@v1
