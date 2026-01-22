@@ -97,8 +97,9 @@ jobs:
 
         aws ecs describe-task-definition \
           --task-definition "$ECS_TASK_DEFINITION" \
-          --query taskDefinition
+          --query taskDefinition \
           --output json > "$TASK_DEF_FILE"
+
         test -s "$TASK_DEF_FILE" || (echo "ERROR: $TASK_DEF_FILE was not created (or is empty)" && exit 1)
 
         echo "Task definition downloaded successfully:"
