@@ -5,6 +5,8 @@ cat >> .gitignore <<'EOF'
 **/*.tfstate.*
 **/terraform.tfstate.d/*
 
+#local files : 
+cheatsheet.txt
 # Local env
 .env
 .DS_Store
