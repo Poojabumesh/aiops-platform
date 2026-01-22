@@ -8,8 +8,8 @@ resource "aws_security_group" "alb" {
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-    description = "Allow HTTP from anywhere"
+    cidr_blocks = ["73.158.134.143/32"]
+    description = "Allow HTTP only from my IPv4"
   }
 
   egress {
