@@ -23,6 +23,7 @@ EOF
 **/lambda_function.zip
 **/*.zip
 **/*.tar
+**/package/
 
 # OS
 .DS_Store

@@ -11,7 +11,7 @@ def make_request(endpoint):
     """Make a request"""
     try:
         requests.get(f"{BASE_URL}{endpoint}", timeout=10)
-    except:
+    except Exception:
         pass
 
 
