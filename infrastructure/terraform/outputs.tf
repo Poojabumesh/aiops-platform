@@ -31,3 +31,7 @@ output "container_name" {
 output "enhanced_dashboard_url" {
   value = "https://console.aws.amazon.com/cloudwatch/home?region=${var.aws_region}#dashboards:name=${aws_cloudwatch_dashboard.enhanced.dashboard_name}"
 }
+
+output "anomaly_lambda_ecr_url" {
+  value = aws_ecr_repository.anomaly_lambda.repository_url
+}

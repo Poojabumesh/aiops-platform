@@ -7,14 +7,34 @@ resource "aws_cloudwatch_dashboard" "enhanced" {
       # Row 1: Application Health
       {
         type   = "metric"
+        width  = 24
+        height = 6
+        properties = {
+          region = var.aws_region
+          title  = "SANITY: ALB RequestCount (1-min)"
+          period = 60
+          metrics = [
+            ["AWS/ApplicationELB", "RequestCount",
+             "LoadBalancer", aws_lb.main.arn_suffix,
+             { "stat": "Sum" }
+            ]
+          ]
+        }
+      },   
+      {
+        type   = "metric"
         width  = 12
         height = 6
         properties = {
           metrics = [
-            ["AWS/ApplicationELB", "TargetResponseTime", { stat = "Average", label = "Response Time" }],
-            [".", "RequestCount", { stat = "Sum", label = "Request Count", yAxis = "right" }]
+            ["AWS/ApplicationELB", "TargetResponseTime", "LoadBalancer", aws_lb.main.arn_suffix,
+              { stat = "Average", label = "Response Time" }
+            ],
+            [".", "RequestCount", ".", ".",
+              { stat = "Sum", label = "Request Count", yAxis = "right" }
+            ]
           ]
-          period = 300
+          period = 60
           stat   = "Average"
           region = var.aws_region
           title  = "Application Performance"
@@ -34,11 +54,19 @@ resource "aws_cloudwatch_dashboard" "enhanced" {
         height = 6
         properties = {
           metrics = [
-            ["AWS/ApplicationELB", "HTTPCode_Target_2XX_Count", { stat = "Sum", label = "2xx Success" }],
-            [".", "HTTPCode_Target_4XX_Count", { stat = "Sum", label = "4xx Client Error" }],
-            [".", "HTTPCode_Target_5XX_Count", { stat = "Sum", label = "5xx Server Error" }]
+            ["AWS/ApplicationELB", "HTTPCode_Target_2XX_Count",
+              "TargetGroup", aws_lb_target_group.app.arn_suffix,
+              "LoadBalancer", aws_lb.main.arn_suffix,
+              { stat = "Sum", label = "2xx Success" }
+            ],
+            [".", "HTTPCode_Target_4XX_Count", ".", ".", ".", ".",
+              { stat = "Sum", label = "4xx Client Error" }
+            ],
+            [".", "HTTPCode_Target_5XX_Count", ".", ".", ".", ".",
+              { stat = "Sum", label = "5xx Server Error" }
+            ]
           ]
-          period = 300
+          period = 60
           stat   = "Sum"
           region = var.aws_region
           title  = "HTTP Response Codes"
@@ -52,10 +80,16 @@ resource "aws_cloudwatch_dashboard" "enhanced" {
         height = 6
         properties = {
           metrics = [
-            ["AWS/ECS", "CPUUtilization", { stat = "Average", label = "CPU Average" }],
-            ["...", { stat = "Maximum", label = "CPU Max" }]
+            ["AWS/ECS", "CPUUtilization",
+              "ClusterName", aws_ecs_cluster.main.name,
+              "ServiceName", aws_ecs_service.app.name,
+              { stat = "Average", label = "CPU Average" }
+            ],
+            [".", "CPUUtilization", ".", ".", ".", ".",
+              { stat = "Maximum", label = "CPU Max" }
+            ]
           ]
-          period = 300
+          period = 60
           stat   = "Average"
           region = var.aws_region
           title  = "ECS CPU Utilization"
@@ -73,10 +107,16 @@ resource "aws_cloudwatch_dashboard" "enhanced" {
         height = 6
         properties = {
           metrics = [
-            ["AWS/ECS", "MemoryUtilization", { stat = "Average", label = "Memory Average" }],
-            ["...", { stat = "Maximum", label = "Memory Max" }]
+            ["AWS/ECS", "MemoryUtilization",
+              "ClusterName", aws_ecs_cluster.main.name,
+              "ServiceName", aws_ecs_service.app.name,
+              { stat = "Average", label = "Memory Average" }
+            ],
+            [".", "MemoryUtilization", ".", ".", ".", ".",
+              { stat = "Maximum", label = "Memory Max" }
+            ]
           ]
-          period = 300
+          period = 60
           stat   = "Average"
           region = var.aws_region
           title  = "ECS Memory Utilization"
@@ -96,10 +136,16 @@ resource "aws_cloudwatch_dashboard" "enhanced" {
         height = 6
         properties = {
           metrics = [
-            ["AWS/ECS", "DesiredTaskCount", { stat = "Average", label = "Desired" }],
-            [".", "RunningTaskCount", { stat = "Average", label = "Running" }]
+            ["AWS/ECS", "DesiredTaskCount",
+              "ClusterName", aws_ecs_cluster.main.name,
+              "ServiceName", aws_ecs_service.app.name,
+              { stat = "Average", label = "Desired" }
+            ],
+            [".", "RunningTaskCount", ".", ".", ".", ".",
+              { stat = "Average", label = "Running" }
+            ]
           ]
-          period = 300
+          period = 60
           stat   = "Average"
           region = var.aws_region
           title  = "ECS Task Count"
@@ -111,10 +157,16 @@ resource "aws_cloudwatch_dashboard" "enhanced" {
         height = 6
         properties = {
           metrics = [
-            ["AWS/ApplicationELB", "HealthyHostCount", { stat = "Average", label = "Healthy" }],
-            [".", "UnHealthyHostCount", { stat = "Average", label = "Unhealthy" }]
+            ["AWS/ApplicationELB", "HealthyHostCount",
+              "LoadBalancer", aws_lb.main.arn_suffix,
+              "TargetGroup", aws_lb_target_group.app.arn_suffix,
+              { stat = "Average", label = "Healthy" }
+            ],
+            [".", "UnHealthyHostCount", ".", ".", ".", ".",
+              { stat = "Average", label = "Unhealthy" }
+            ]
           ]
-          period = 300
+          period = 60
           stat   = "Average"
           region = var.aws_region
           title  = "Target Health"
@@ -126,12 +178,32 @@ resource "aws_cloudwatch_dashboard" "enhanced" {
         height = 6
         properties = {
           metrics = [
-            ["AWS/ApplicationELB", "ActiveConnectionCount", { stat = "Sum" }]
+            ["AWS/ApplicationELB", "ActiveConnectionCount",
+              "LoadBalancer", aws_lb.main.arn_suffix,
+              { stat = "Sum", label = "Active Connections" }
+            ]
           ]
-          period = 300
+          period = 60
           stat   = "Sum"
           region = var.aws_region
           title  = "Active Connections"
+        }
+      },
+     #anomaly detection
+      {
+        type   = "log"
+        width  = 24
+        height = 6
+        properties = {
+          query   = <<-EOT
+            SOURCE '/aws/lambda/${var.app_name}-anomaly-detector'
+            | fields @timestamp, @message
+            | filter @message like /ANOMALY DETECTED/
+            | sort @timestamp desc
+            | limit 20
+          EOT
+          region  = var.aws_region
+          title   = "Recent Anomaly Detections"
         }
       }
     ]
@@ -145,7 +217,7 @@ resource "aws_cloudwatch_metric_alarm" "high_error_rate" {
   evaluation_periods  = 2
   metric_name         = "HTTPCode_Target_5XX_Count"
   namespace           = "AWS/ApplicationELB"
-  period              = 300
+  period              = 60
   statistic           = "Sum"
   threshold           = 10
   alarm_description   = "Alert when error rate is high"
@@ -162,7 +234,7 @@ resource "aws_cloudwatch_metric_alarm" "high_memory" {
   evaluation_periods  = 2
   metric_name         = "MemoryUtilization"
   namespace           = "AWS/ECS"
-  period              = 300
+  period              = 60
   statistic           = "Average"
   threshold           = 80
   alarm_description   = "Alert when memory usage is high"

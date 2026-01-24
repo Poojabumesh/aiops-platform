@@ -1,9 +1,31 @@
 import boto3
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 import json
 
 # Initialize CloudWatch client
 cloudwatch = boto3.client("cloudwatch", region_name="us-east-1")
+
+REGION = "us-east-1"
+ALB_NAME = "aiops-platform-alb"
+TG_NAME = "aiops-platform-tg"
+
+elbv2 = boto3.client("elbv2", region_name=REGION)
+
+lb_arn = elbv2.describe_load_balancers(Names=[ALB_NAME])["LoadBalancers"][0][
+    "LoadBalancerArn"
+]
+tg_arn = elbv2.describe_target_groups(Names=[TG_NAME])["TargetGroups"][0][
+    "TargetGroupArn"
+]
+
+lb_suffix = lb_arn.split("loadbalancer/")[1]  # app/xxx/yyy
+tg_suffix = "targetgroup/" + tg_arn.split("targetgroup/")[1]  # targetgroup/xxx/yyy
+
+lb_dims = [{"Name": "LoadBalancer", "Value": lb_suffix}]
+lb_tg_dims = [
+    {"Name": "LoadBalancer", "Value": lb_suffix},
+    {"Name": "TargetGroup", "Value": tg_suffix},
+]
 
 
 def get_metric_statistics(metric_name, namespace, dimensions, start_time, end_time):
@@ -14,7 +36,7 @@ def get_metric_statistics(metric_name, namespace, dimensions, start_time, end_ti
         Dimensions=dimensions,
         StartTime=start_time,
         EndTime=end_time,
-        Period=300,  # 5 minutes
+        Period=60,  # 5 minutes
         Statistics=["Average", "Maximum", "Minimum", "Sum"],
     )
     return response["Datapoints"]
@@ -22,8 +44,8 @@ def get_metric_statistics(metric_name, namespace, dimensions, start_time, end_ti
 
 def export_baseline_data():
     """Export baseline metrics for ML training"""
-    end_time = datetime.utcnow()
-    start_time = end_time - timedelta(hours=1)  # Last hour
+    end_time = datetime.now(timezone.utc)
+    start_time = end_time - timedelta(hours=2)  # Last hour
 
     metrics_data = {}
 
@@ -56,19 +78,23 @@ def export_baseline_data():
     # Response Time
     print("Exporting Response Time metrics...")
     metrics_data["response_time"] = get_metric_statistics(
-        "TargetResponseTime", "AWS/ApplicationELB", [], start_time, end_time
+        "TargetResponseTime", "AWS/ApplicationELB", lb_tg_dims, start_time, end_time
     )
 
     # Request Count
     print("Exporting Request Count metrics...")
     metrics_data["request_count"] = get_metric_statistics(
-        "RequestCount", "AWS/ApplicationELB", [], start_time, end_time
+        "RequestCount", "AWS/ApplicationELB", lb_dims, start_time, end_time
     )
 
     # 5xx Errors
     print("Exporting Error metrics...")
     metrics_data["errors_5xx"] = get_metric_statistics(
-        "HTTPCode_Target_5XX_Count", "AWS/ApplicationELB", [], start_time, end_time
+        "HTTPCode_Target_5XX_Count",
+        "AWS/ApplicationELB",
+        lb_tg_dims,
+        start_time,
+        end_time,
     )
 
     # Save to file

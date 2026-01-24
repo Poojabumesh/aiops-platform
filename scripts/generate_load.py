@@ -7,6 +7,9 @@ import sys
 ALB_DNS = sys.argv[1] if len(sys.argv) > 1 else "YOUR-ALB-DNS-HERE"
 BASE_URL = f"http://{ALB_DNS}"
 
+print("ALB_DNS =", ALB_DNS)
+print("BASE_URL =", BASE_URL)
+
 
 def make_request(endpoint):
     """Make a request and return status code and latency"""
@@ -101,8 +104,8 @@ if __name__ == "__main__":
         sys.exit(1)
 
     print("=== Baseline Data Collection ===")
-    print("This will generate 10 minutes of normal traffic")
+    print("This will generate 60 minutes of normal traffic")
     print("Phase 4 will use this as baseline for anomaly detection\n")
 
-    # Generate 10 minutes of normal traffic for baseline
-    generate_normal_load(duration_seconds=600, requests_per_second=5)
+    # Generate 60 minutes of normal traffic for baseline
+    generate_normal_load(duration_seconds=3600, requests_per_second=5)

@@ -1,0 +1,138 @@
+[
+  {
+    "timestamp": "2026-01-23T02:40:00+00:00",
+    "cpu_utilization": 0.5705156018336615,
+    "memory_utilization": 4.4921875,
+    "response_time": 0.047303500000000005,
+    "request_count": 0.0975609756097561,
+    "error_rate": 0.0
+  },
+  {
+    "timestamp": "2026-01-23T02:55:00+00:00",
+    "cpu_utilization": 0.656516394764185,
+    "memory_utilization": 4.4921875,
+    "response_time": 0.22400488607594937,
+    "request_count": 0.6752136752136753,
+    "error_rate": 148.1012658227848
+  },
+  {
+    "timestamp": "2026-01-23T03:00:00+00:00",
+    "cpu_utilization": 1.77523623307546,
+    "memory_utilization": 4.4921875,
+    "response_time": 0.2064842576064909,
+    "request_count": 0.9572815533980582,
+    "error_rate": 104.46247464503043
+  },
+  {
+    "timestamp": "2026-01-23T03:05:00+00:00",
+    "cpu_utilization": 1.5005528877178829,
+    "memory_utilization": 4.4921875,
+    "response_time": 0.2236916513994911,
+    "request_count": 0.9379474940334129,
+    "error_rate": 106.61577608142494
+  },
+  {
+    "timestamp": "2026-01-23T03:15:00+00:00",
+    "cpu_utilization": 1.3228953260928393,
+    "memory_utilization": 4.4921875,
+    "response_time": 0.20603507508532423,
+    "request_count": 0.9071207430340558,
+    "error_rate": 110.23890784982935
+  },
+  {
+    "timestamp": "2026-01-23T03:20:00+00:00",
+    "cpu_utilization": 1.5931299328804016,
+    "memory_utilization": 4.4921875,
+    "response_time": 0.2210733987341772,
+    "request_count": 0.9556451612903226,
+    "error_rate": 104.64135021097046
+  },
+  {
+    "timestamp": "2026-01-23T03:25:00+00:00",
+    "cpu_utilization": 1.5157926221688587,
+    "memory_utilization": 4.4921875,
+    "response_time": 0.22774945060240961,
+    "request_count": 0.9496567505720824,
+    "error_rate": 105.30120481927709
+  },
+  {
+    "timestamp": "2026-01-23T03:30:00+00:00",
+    "cpu_utilization": 1.5622356454531352,
+    "memory_utilization": 4.4921875,
+    "response_time": 0.214250776119403,
+    "request_count": 0.955193482688391,
+    "error_rate": 104.69083155650321
+  },
+  {
+    "timestamp": "2026-01-23T03:35:00+00:00",
+    "cpu_utilization": 1.625224490960439,
+    "memory_utilization": 4.4921875,
+    "response_time": 0.21861114634146342,
+    "request_count": 0.9571984435797666,
+    "error_rate": 104.47154471544715
+  },
+  {
+    "timestamp": "2026-01-23T03:40:00+00:00",
+    "cpu_utilization": 1.7837210158507026,
+    "memory_utilization": 4.4921875,
+    "response_time": 0.21095471,
+    "request_count": 0.9541984732824428,
+    "error_rate": 104.80000000000001
+  },
+  {
+    "timestamp": "2026-01-23T03:45:00+00:00",
+    "cpu_utilization": 1.6292494873205823,
+    "memory_utilization": 4.4921875,
+    "response_time": 0.2140945441767068,
+    "request_count": 0.9613899613899614,
+    "error_rate": 104.01606425702812
+  },
+  {
+    "timestamp": "2026-01-23T03:50:00+00:00",
+    "cpu_utilization": 1.6323741594950356,
+    "memory_utilization": 4.4921875,
+    "response_time": 0.21483536800000003,
+    "request_count": 0.9505703422053232,
+    "error_rate": 105.2
+  },
+  {
+    "timestamp": "2026-01-23T03:55:00+00:00",
+    "cpu_utilization": 1.770667765537898,
+    "memory_utilization": 4.4921875,
+    "response_time": 0.22115022874493925,
+    "request_count": 0.9610894941634242,
+    "error_rate": 104.0485829959514
+  },
+  {
+    "timestamp": "2026-01-23T04:00:00+00:00",
+    "cpu_utilization": 1.9311113834381106,
+    "memory_utilization": 4.4921875,
+    "response_time": 0.210384581027668,
+    "request_count": 0.9547169811320755,
+    "error_rate": 104.74308300395256
+  },
+  {
+    "timestamp": "2026-01-23T04:05:00+00:00",
+    "cpu_utilization": 1.7253728032112121,
+    "memory_utilization": 4.4921875,
+    "response_time": 0.2181184638554217,
+    "request_count": 0.9540229885057471,
+    "error_rate": 104.81927710843375
+  },
+  {
+    "timestamp": "2026-01-23T04:10:00+00:00",
+    "cpu_utilization": 1.717226310571035,
+    "memory_utilization": 4.4921875,
+    "response_time": 0.22243347648261758,
+    "request_count": 0.9569471624266145,
+    "error_rate": 104.49897750511248
+  },
+  {
+    "timestamp": "2026-01-23T04:15:00+00:00",
+    "cpu_utilization": 1.2081331989417472,
+    "memory_utilization": 4.4921875,
+    "response_time": 0.20292324875621892,
+    "request_count": 0.8854625550660793,
+    "error_rate": 112.93532338308458
+  }
+]

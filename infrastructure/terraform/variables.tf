@@ -9,3 +9,9 @@ variable "environment" {
 variable "app_name" {
   default = "aiops-platform"
 }
+
+variable "alert_email" {
+  description = "Email address for anomaly alerts"
+  type        = string
+  default     = "flavormetrics@gmail.com"
+}

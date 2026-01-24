@@ -1,0 +1,1 @@
+{"statusCode": 200, "body": "{\"is_anomaly\": true, \"anomaly_score\": -0.7920750037430652, \"timestamp\": \"2026-01-24T17:29:13.912981\", \"metrics\": {\"cpu_utilization\": 0.6557456720620394, \"memory_utilization\": 4.4921875, \"response_time\": 0, \"request_count\": 0, \"error_rate\": 0}}"}
