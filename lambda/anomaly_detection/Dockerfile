@@ -1,11 +1,7 @@
 FROM public.ecr.aws/lambda/python:3.11
 
-RUN python -m pip install --upgrade pip setuptools wheel
-
-COPY requirements.txt ${LAMBDA_TASK_ROOT}/
-RUN pip install -r ${LAMBDA_TASK_ROOT}/requirements.txt \
-    --target ${LAMBDA_TASK_ROOT} \
-    --no-cache-dir
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt --target ${LAMBDA_TASK_ROOT}
 
 COPY lambda_function.py ${LAMBDA_TASK_ROOT}/
 
