@@ -1,9 +1,10 @@
-cat >> .gitignore <<'EOF'
 # Terraform
 **/.terraform/*
 **/*.tfstate
 **/*.tfstate.*
 **/terraform.tfstate.d/*
+*.tfplan
+crash.log
 
 #local files : 
 cheatsheet.txt
@@ -11,3 +12,18 @@ cheatsheet.txt
 .env
 .DS_Store
 EOF
+
+# Python
+**/__pycache__/
+*.pyc
+
+# Lambda build artifacts / layers
+**/layer/
+**/layer.zip
+**/lambda_function.zip
+**/*.zip
+**/*.tar
+
+# OS
+.DS_Store
+
