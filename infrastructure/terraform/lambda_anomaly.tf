@@ -113,6 +113,7 @@ resource "aws_lambda_function" "anomaly_detector" {
     variables = {
       MODEL_BUCKET  = aws_s3_bucket.ml_models.id
       SNS_TOPIC_ARN = aws_sns_topic.anomaly_alerts.arn
+      RCA_FUNCTION_NAME = aws_lambda_function.rca.function_name
     }
   }
 }
