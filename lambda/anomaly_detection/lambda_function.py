@@ -4,7 +4,8 @@ import os
 import joblib
 from datetime import datetime, timedelta
 import numpy as np
-lambda_client = boto3.client('lambda')
+
+lambda_client = boto3.client("lambda")
 
 # Load model at cold start
 MODEL_PATH = "/tmp/anomaly_detector.pkl"
@@ -104,17 +105,16 @@ def send_alert(result):
 def trigger_rca(result):
     """Trigger root cause analysis Lambda"""
     try:
-        rca_function = os.environ.get('RCA_FUNCTION_NAME', 'aiops-platform-rca')
-        
+        rca_function = os.environ.get("RCA_FUNCTION_NAME", "aiops-platform-rca")
+
         lambda_client.invoke(
             FunctionName=rca_function,
-            InvocationType='Event',  # Async
-            Payload=json.dumps(result)
+            InvocationType="Event",  # Async
+            Payload=json.dumps(result),
         )
         print(f"Triggered RCA Lambda: {rca_function}")
     except Exception as e:
         print(f"Failed to trigger RCA: {str(e)}")
-
 
 
 def lambda_handler(event, context):
